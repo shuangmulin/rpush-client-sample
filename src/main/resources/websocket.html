@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>Rpush</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./websocket/reset.min.css">
+
+    <link rel="stylesheet" href="./websocket/style.css">
+
+    <style type="text/css" abt="234"></style>
+    <style type="text/css">
+        ._th-container ._th-item {
+            margin-bottom: 3px;
+            position: relative;
+            width: 0;
+            height: 0;
+            cursor: pointer;
+            opacity: .3;
+            background-color: aquamarine;
+            border-radius: 100%;
+            text-align: center;
+            line-height: 30px;
+            -webkit-transition: all .35s;
+            -o-transition: all .35s;
+            transition: all .35s;
+            right: 30px
+        }
+
+        ._th-container ._th-item, ._th-container ._th-click-hover, ._th_cover-all-show-times ._th_times {
+            -webkit-box-shadow: -3px 4px 12px -5px black;
+            box-shadow: -3px 4px 12px -5px black
+        }
+
+        ._th-container:hover ._th-item._item-x2 {
+            margin-left: 18px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px
+        }
+
+        ._th-container:hover ._th-item._item-x-2 {
+            margin-left: 17px;
+            width: 38px;
+            height: 38px;
+            line-height: 38px
+        }
+
+        ._th-container:hover ._th-item._item-xx2 {
+            width: 36px;
+            height: 36px;
+            margin-left: 16px;
+            line-height: 36px
+        }
+
+        ._th-container:hover ._th-item._item-xx-2 {
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            margin-left: 14px
+        }
+
+        ._th-container:hover ._th-item._item-reset {
+            width: 30px;
+            line-height: 30px;
+            height: 30px;
+            margin-left: 10px
+        }
+
+        ._th-click-hover {
+            position: relative;
+            -webkit-transition: all .5s;
+            -o-transition: all .5s;
+            transition: all .5s;
+            height: 45px;
+            width: 45px;
+            cursor: pointer;
+            opacity: .3;
+            border-radius: 100%;
+            background-color: aquamarine;
+            text-align: center;
+            line-height: 45px;
+            right: 0
+        }
+
+        ._th-container:hover {
+            left: -5px
+        }
+
+        ._th-container {
+            font-size: 12px;
+            -webkit-transition: all .5s;
+            -o-transition: all .5s;
+            transition: all .5s;
+            left: -35px;
+            top: 20%;
+            position: fixed;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            z-index: 100000;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none
+        }
+
+        ._th-container ._th-item:hover {
+            opacity: .8;
+            background-color: #5fb492;
+            color: aliceblue
+        }
+
+        ._th-container ._th-item:active {
+            opacity: .9;
+            background-color: #1b3a26;
+            color: aliceblue
+        }
+
+        ._th-container:hover ._th-click-hover {
+            opacity: .8
+        }
+
+        ._th-container:hover ._th-item {
+            opacity: .6;
+            right: 0
+        }
+
+        ._th-container ._th-click-hover:hover {
+            opacity: .8;
+            background-color: #5fb492;
+            color: aliceblue
+        }
+
+        ._th_cover-all-show-times {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            opacity: 1;
+            font-weight: 900;
+            font-size: 30px;
+            color: #4f4f4f;
+            background-color: rgba(0, 0, 0, 0.1)
+        }
+
+        ._th_cover-all-show-times._th_hidden {
+            z-index: -99999;
+            opacity: 0;
+            -webkit-transition: 1s all;
+            -o-transition: 1s all;
+            transition: 1s all
+        }
+
+        ._th_cover-all-show-times ._th_times {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background-color: rgba(127, 255, 212, 0.51);
+            text-align: center;
+            line-height: 300px;
+            position: absolute;
+            top: 50%;
+            right: 50%;
+            margin-top: -150px;
+            margin-right: -150px
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <script>//console.log('a')
+    </script>
+    <script>//remove baidu search ad
+    var _countAA = 0
+
+    function doBBBd() {
+    }
+
+    doBBBd()
+    document.addEventListener('keyup', function () {
+        _countAA -= 10;
+        doBBBd()
+    }, false)
+    document.addEventListener('click', function () {
+        _countAA -= 10;
+        doBBBd()
+    }, false)
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./websocket/socket.io.js"></script>
+
+    <link rel="stylesheet" href="websocket/reset.min.css">
+</head>
+<body>
+<div id="app">
+    <el-dialog :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false" title="设置"
+               :visible.sync="dialogFormVisible">
+        <el-form :rules="rules" :model="setting" ref="settingForm">
+            <el-form-item label="服务地址" :label-width="formLabelWidth" prop="servicePath">
+                <el-input v-model="setting.servicePath" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="clientId" :label-width="formLabelWidth" prop="clientId">
+                <el-input v-model="setting.clientId" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="clientSecret" :label-width="formLabelWidth" prop="clientSecret">
+                <el-input v-model="setting.clientSecret" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="登录名" :label-width="formLabelWidth" prop="loginName">
+                <el-input v-model="setting.loginName" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="登录密码" :label-width="formLabelWidth" prop="password">
+                <el-input v-model="setting.password" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="closeSetting">确 定</el-button>
+            <el-button @click="resetSetting">重置</el-button>
+        </div>
+    </el-dialog>
+    <div v-cloak class="wrapper">
+        <div class="container">
+            <div class="left">
+                <div class="top" style="display: flex;">
+                    <div>
+                        <div style="font-size: large;font-weight: bold">{{registration.name}}</div>
+                        <div style="font-size: small;padding-top:10px;color:gray">{{registration.id}}</div>
+                    </div>
+                    <a href="javascript:;" class="search"></a>
+                </div>
+                <ul class="people">
+                    <li v-for="item in registrationList"
+                        :class="'person '+ (item.id == activeChatRegistration.id ? 'active' : '')"
+                        @click="chatTo(item.id)" data-chat="person1">
+                        <span v-if="item.unreadQuantity"
+                              style="margin-right: -3px;float:left;background-color: red;border-radius: 10px;color: white;font-size: small;">&nbsp;{{item.unreadQuantity}}&nbsp;</span>
+                        <img src="https://hbimg.huabanimg.com/78a381109dd1919a0bde420b62525b2df37ac73f17b1-rx7BWq_fw658/format/webp"
+                             alt="">
+                        <span class="name">{{item.name}}</span>
+                        <span class="time">{{item.lastMsgTime}}</span>
+                        <span class="preview">{{item.lastMsg}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="right">
+                <div class="top"><span>To: <span class="name">{{activeChatRegistration.name}}</span></span></div>
+                <div class="chat active-chat" id="chatContainer"
+                     style="padding-top: 400px;padding-bottom:10px;overflow-y: scroll;height: calc(100% - 120px);display: block"
+                     data-chat="person2">
+                    <div v-for="item in activeChatRegistration.msgList" :class="'bubble '+item.belongTo">
+                        {{item.msg}}
+                    </div>
+                </div>
+                <div class="write">
+                    <a href="javascript:;" class="write-link attach"></a>
+                    <label>
+                        <input v-model="inputMsg" @keydown.enter="sendMessage" type="text">
+                    </label>
+                    <a href="javascript:;" @click="sendMessage" class="write-link send"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./websocket/index.js.下载"></script>
+
+    <div>
+        <div class="_th-container">
+            <div class="_th-click-hover _item-input">
+                x1.00
+            </div>
+            <div class="_th-item _item-x2">&gt;</div>
+            <div class="_th-item _item-x-2">&lt;</div>
+            <div class="_th-item _item-xx2">&gt;&gt;</div>
+            <div class="_th-item _item-xx-2">&lt;&lt;</div>
+            <div class="_th-item _item-reset">O</div>
+        </div>
+        <div class="_th_cover-all-show-times _th_hidden">
+            <div class="_th_times">x1.00</div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            dialogFormVisible: true,
+            rpushRouteServiceName: "rpush-route",
+            token: '',
+            registration: {},
+            setting: {
+                servicePath: 'http://localhost:8124',
+                clientId: 'admin',
+                clientSecret: 'admin',
+                loginName: 'user1',
+                password: 'admin'
+            },
+            inputMsg: "",
+            activeChatRegistration: {
+                // id: 0,
+                // name: '马化腾',
+                // unreadQuantity: 3,
+                // lastMsg: "fkjsjflalskjflk",
+                // lastMsgTime: "19:18:19",
+                // msgList: [
+                //     {
+                //         belongTo: "me",
+                //         msg: "你好",
+                //         read: false
+                //     },
+                //     {
+                //         belongTo: "you",
+                //         msg: "你好呀",
+                //         read: false
+                //     }
+                // ]
+            },
+            registrationList: [
+                // {
+                //     id: 0,
+                //     name: '马化腾',
+                //     unreadQuantity: 3,
+                //     lastMsg: "fkjsjflalskjflk",
+                //     lastMsgTime: "19:18:19",
+                //     msgList: [
+                //         {
+                //             belongTo: "me",
+                //             msg: "你好",
+                //             read: false,
+                //             msgTime: '19:18:19'
+                //         },
+                //         {
+                //             belongTo: "you",
+                //             msg: "你好呀",
+                //             read: false,
+                //             msgTime: '19:18:19'
+                //         }
+                //     ]
+                // }
+            ],
+            rules: {
+                servicePath: [
+                    {required: true, message: '请输入服务地址', trigger: 'blur'}
+                ],
+                clientId: [
+                    {required: true, message: '请输入clientId', trigger: 'blur'}
+                ],
+                clientSecret: [
+                    {required: true, message: '请输入clientSecret', trigger: 'blur'}
+                ],
+                loginName: [
+                    {required: true, message: '请输入登录名', trigger: 'blur'}
+                ],
+                password: [
+                    {required: true, message: '请输入登录密码', trigger: 'blur'}
+                ]
+            },
+            formLabelWidth: '120px'
+        },
+        mounted: function () {
+            // this.start();
+            // this.scrollBottom();
+            let app = this;
+            setInterval(function () {
+                app.listOnline();
+            }, 1000);
+        },
+        methods: {
+            scrollBottom: function () {
+                this.$nextTick(() => {
+                    var container = this.$el.querySelector("#chatContainer");
+                    container.scrollTop = container.scrollHeight;
+                })
+            },
+            closeSetting: function () {
+                let that = this;
+                this.$refs['settingForm'].validate((valid) => {
+                    if (!valid) {
+                        return false;
+                    }
+
+                    that.dialogFormVisible = false;
+                    that.start();
+                });
+            },
+            resetSetting() {
+                this.$refs['settingForm'].resetFields();
+            },
+            chatTo(id) {
+                for (const listElement of this.registrationList) {
+                    if (id === listElement.id) {
+                        listElement.unreadQuantity = 0;
+                        this.activeChatRegistration = listElement
+                        this.scrollBottom();
+                    }
+                }
+            },
+            start() {
+                // 已填好设置信息，开始使用
+                let app = this;
+                // 登录
+                axios({
+                    method: 'get',
+                    url: app.setting.servicePath + '/' + app.rpushRouteServiceName + '/oauth/token?grant_type=password&scope=all&username='
+                        + app.setting.loginName + '&password=' + app.setting.password + '&client_id=' + app.setting.clientId + '&client_secret=' + app.setting.clientSecret
+                }).then(function (res) {
+                    app.token = res.data.access_token;
+                    // 拿设备数据
+                    axios({
+                        method: 'get',
+                        url: app.setting.servicePath + '/' + app.rpushRouteServiceName + '/rpush-server-registration/current',
+                        headers: {
+                            'Authorization': 'Bearer ' + app.token
+                        }
+                    }).then(function (res) {
+                        app.registration = res.data.data
+                        // 拿服务器信息
+                        axios({
+                            method: 'get',
+                            url: app.setting.servicePath + '/' + app.rpushRouteServiceName + '/route'
+                        }).then(function (res) {
+                            let host = res.data.data.host;
+                            let webSocketPort = res.data.data.webSocketPort;
+                            let registrationId = app.registration.id
+
+                            app.listOnline(); // 查在线列表
+
+                            const socket = io.connect('http://' + host + ':' + webSocketPort + '?registrationId=' + registrationId);
+
+                            // 监听服务器端发送消息事件
+                            socket.on('message', function (data) {
+                                let msg = JSON.parse(data);
+                                if (msg.fromTo) {
+                                    app.processMsg(msg)
+                                }
+                            });
+                        });
+                    });
+                });
+            },
+            processMsg(msg) {
+                let fromTo = msg.fromTo;
+                let content = msg.content;
+                for (const listElement of this.registrationList) {
+                    if (fromTo === listElement.id) {
+                        listElement.lastMsg = content;
+                        if (this.activeChatRegistration.id === fromTo) {
+                            // 打开的就是当前设备
+                            listElement.unreadQuantity = 0;
+                        } else {
+                            listElement.unreadQuantity = listElement.unreadQuantity + 1;
+                        }
+                        let time = this.getCurrentTime();
+                        listElement.lastMsgTime = time;
+                        listElement.msgList.push({
+                            belongTo: "you",
+                            msg: content,
+                            msgTime: time
+                        });
+                        if (this.activeChatRegistration.id === fromTo) {
+                            this.scrollBottom();
+                        }
+                    }
+                }
+            },
+            sendMessage() {
+                let app = this;
+                if (!this.inputMsg) {
+                    return;
+                }
+                axios({
+                    method: 'post',
+                    url: app.setting.servicePath + '/' + app.rpushRouteServiceName + '/message/push',
+                    headers: {
+                        'Authorization': 'Bearer ' + app.token
+                    },
+                    data: {
+                        messageParam: {
+                            RPUSH_SERVER: {
+                                param: {
+                                    fromTo: app.registration.id,
+                                    content: app.inputMsg,
+                                    receiverIds: [
+                                        app.activeChatRegistration.id
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }).then(function (res) {
+                    for (const listElement of app.registrationList) {
+                        if (app.activeChatRegistration.id === listElement.id) {
+                            listElement.lastMsg = app.inputMsg;
+                            let currentTime = app.getCurrentTime();
+                            listElement.lastMsgTime = currentTime;
+                            listElement.msgList.push({
+                                belongTo: "me",
+                                msg: app.inputMsg,
+                                msgTime: currentTime
+                            });
+                            this.activeChatRegistration = listElement
+                        }
+                    }
+
+                    app.inputMsg = '';
+                    app.scrollBottom();
+                });
+            },
+            listOnline: function () {
+                let app = this;
+                if (!app.token) {
+                    return;
+                }
+                axios({
+                    method: 'post',
+                    url: app.setting.servicePath + '/' + app.rpushRouteServiceName + '/rpush-server-online/registrations',
+                    headers: {
+                        'Authorization': 'Bearer ' + app.token
+                    },
+                    data: {
+                        pageNum: 1
+                    }
+                }).then(function (res) {
+                    let list = res.data.data.dataList;
+                    if (!list) {
+                        list = [];
+                    }
+                    for (const listElement of list) {
+                        if (listElement.id === app.registration.id) {
+                            continue;
+                        }
+                        if (app.containsRegistration(listElement.id, app.registrationList)) {
+                            // 已经有的不重复添加
+                            continue;
+                        }
+                        app.registrationList.push({
+                            id: listElement.id,
+                            name: listElement.name,
+                            unreadQuantity: 0,
+                            lastMsg: "",
+                            lastMsgTime: "",
+                            msgList: []
+                        });
+                    }
+                    app.removeOffline(list);
+                });
+            },
+            containsRegistration(id, list) {
+                for (const listElement of list) {
+                    if (listElement.id === id) {
+                        return true;
+                    }
+                }
+                return false;
+            },
+            removeOffline(list) {
+                for (let i = 0; i < this.registrationList.length; i++) {
+                    let listElement = this.registrationList[i];
+                    if (this.containsRegistration(listElement.id, list)) {
+                        continue;
+                    }
+                    // 去掉已经下线的
+                    this.registrationList.splice(i--, 1);
+                }
+            },
+            getCurrentTime() {
+                // 获取当前时间
+                let yy = new Date().getFullYear();
+                let mm = new Date().getMonth() + 1;
+                let dd = new Date().getDate();
+                let hh = new Date().getHours();
+                let mf = new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes();
+                let ss = new Date().getSeconds() < 10 ? '0' + new Date().getSeconds() : new Date().getSeconds();
+                return yy + '/' + mm + '/' + dd + ' ' + hh + ':' + mf + ':' + ss;
+            }
+        }
+    })
+</script>
+</html>
